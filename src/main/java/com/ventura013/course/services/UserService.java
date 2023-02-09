@@ -13,14 +13,18 @@ import com.ventura013.course.repositories.UserRepository;
 public class UserService {
 	
 	@Autowired
-	private UserRepository Repository;
+	private UserRepository repository;
 
 	public List<User> findAll() {
-		return Repository.findAll();		
+		return repository.findAll();		
 	}
 	
 	public User findById(Integer id) {
-		Optional<User> obj = Repository.findById(id);
+		Optional<User> obj = repository.findById(id);
 		return obj.get();
+	}
+	
+	public User insert(User obj) {
+		return repository.save(obj);
 	}
 }
