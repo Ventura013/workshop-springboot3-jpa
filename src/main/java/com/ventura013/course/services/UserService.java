@@ -13,6 +13,8 @@ import com.ventura013.course.repositories.UserRepository;
 import com.ventura013.course.services.excepitons.DatabaseException;
 import com.ventura013.course.services.excepitons.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class UserService {
 	
@@ -44,9 +46,13 @@ public class UserService {
 		
 	
 	public User update(Integer id, User obj) {
-		User entity = repository.getReferenceById(id);
-		updateDate(entity, obj);
-		return repository.save(entity);
+		try {
+			User entity = repository.getReferenceById(id);
+			updateDate(entity, obj);
+			return repository.save(entity);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
 	}
 
 	private void updateDate(User entity, User obj) {
